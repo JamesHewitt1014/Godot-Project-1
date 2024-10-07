@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=3 uid="uid://bhssrwrhh7x6d"]
+
+[ext_resource type="Script" path="res://label1.cs" id="1_j41wb"]
+
+[node name="Main" type="Node"]
+
+[node name="label1" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -45.5
+offset_top = -11.5
+offset_right = 45.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Hello World"
+script = ExtResource("1_j41wb")
+color = Color(1, 0.254902, 1, 1)
