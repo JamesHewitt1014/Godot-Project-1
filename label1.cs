@@ -16,6 +16,7 @@ public partial class label1 : Godot.Label
 		_label1 = this; 
 		_label1.Text = "Howdy";
 		_label1.Modulate = color;
+		GD.Print(color);
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.

@@ -5,7 +5,7 @@ public partial class Ball : Node2D
 {
 	
 	[Export] 
-	public Vector2 speed { get; set; }
+	public float speed { get; set; }
 	
 	public Vector2 _direction { get; set; }
 	
@@ -17,11 +17,18 @@ public partial class Ball : Node2D
 		_direction = new Vector2(random.Next(-1, 1), random.Next(-1, 1));
 		
 		GlobalPosition = GlobalPosition + _direction; 
+		GD.Print(_direction);
 	}
 	
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		GlobalPosition = GlobalPosition + _direction;
+		GlobalPosition = GlobalPosition + _direction * speed; // * (float)delta;
+	}
+
+	public void OnCollide(Area2D body)
+	{
+		_direction = new Vector2(_direction.X * -1, _direction.Y * -1);
+		GD.Print(_direction);	
 	}
 }

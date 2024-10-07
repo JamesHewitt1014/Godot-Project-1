@@ -1,30 +1,36 @@
-[gd_scene load_steps=2 format=3 uid="uid://dy7jjtm1xawb5"]
+[gd_scene load_steps=3 format=3 uid="uid://dy7jjtm1xawb5"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_07lsd"]
-size = Vector2(1166, 20)
+[ext_resource type="PackedScene" uid="uid://4bk5u6xmrq56" path="res://game_objects/ball/ball.tscn" id="1_kkbnu"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_olej5"]
+size = Vector2(1176, 41)
 
 [node name="Main" type="Node"]
 
-[node name="top_wall" type="StaticBody2D" parent="."]
+[node name="Walls" type="Area2D" parent="."]
 
-[node name="wall_collider" type="CollisionShape2D" parent="top_wall"]
-position = Vector2(578, 2)
-shape = SubResource("RectangleShape2D_07lsd")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls"]
+position = Vector2(575, 10)
+shape = SubResource("RectangleShape2D_olej5")
 
-[node name="bottom_wall" type="StaticBody2D" parent="."]
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Walls"]
+position = Vector2(579, 648)
+shape = SubResource("RectangleShape2D_olej5")
 
-[node name="wall_collider" type="CollisionShape2D" parent="bottom_wall"]
-position = Vector2(578, 647)
-shape = SubResource("RectangleShape2D_07lsd")
+[node name="ColorRect" type="ColorRect" parent="Walls"]
+offset_left = -2.0
+offset_top = 629.0
+offset_right = 1177.0
+offset_bottom = 669.0
 
-[node name="test_wall" type="StaticBody2D" parent="."]
+[node name="ColorRect2" type="ColorRect" parent="Walls"]
+offset_left = -19.0
+offset_top = -9.0
+offset_right = 1160.0
+offset_bottom = 31.0
 
-[node name="wall_collider" type="CollisionShape2D" parent="test_wall"]
-position = Vector2(1, 282)
-rotation = 1.56758
-shape = SubResource("RectangleShape2D_07lsd")
+[node name="Ball" parent="." instance=ExtResource("1_kkbnu")]
+position = Vector2(555, 308)
+speed = 2.0
 
-[node name="wall_collider" type="CollisionShape2D" parent="test_wall/wall_collider"]
-position = Vector2(-9.29346, -1152.04)
-rotation = 3.14729
-shape = SubResource("RectangleShape2D_07lsd")
+[connection signal="area_entered" from="Walls" to="Ball" method="OnCollide"]
