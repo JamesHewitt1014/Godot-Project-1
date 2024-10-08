@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://dy7jjtm1xawb5"]
+[gd_scene load_steps=4 format=3 uid="uid://dy7jjtm1xawb5"]
 
 [ext_resource type="PackedScene" uid="uid://4bk5u6xmrq56" path="res://game_objects/ball/ball.tscn" id="1_kkbnu"]
+[ext_resource type="PackedScene" uid="uid://5laki8o71bpl" path="res://game_objects/paddle/paddle.tscn" id="2_tari7"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_olej5"]
 size = Vector2(1176, 41)
@@ -29,8 +30,17 @@ offset_top = -9.0
 offset_right = 1160.0
 offset_bottom = 31.0
 
-[node name="Ball" parent="." instance=ExtResource("1_kkbnu")]
-position = Vector2(555, 308)
+[node name="Ball" parent="." node_paths=PackedStringArray("PlayerPaddle", "AIPaddle") instance=ExtResource("1_kkbnu")]
+position = Vector2(512, 300)
 speed = 2.0
+x = -1.0
+PlayerPaddle = NodePath("../Player Paddle")
+AIPaddle = NodePath("../Enemy Paddle")
 
-[connection signal="area_entered" from="Walls" to="Ball" method="OnCollide"]
+[node name="Player Paddle" parent="." instance=ExtResource("2_tari7")]
+position = Vector2(36, 314)
+
+[node name="Enemy Paddle" parent="." instance=ExtResource("2_tari7")]
+position = Vector2(1135, 317)
+
+[connection signal="area_entered" from="Walls" to="Ball" method="OnCollideWall"]
