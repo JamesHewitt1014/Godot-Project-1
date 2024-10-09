@@ -1,29 +1,46 @@
-[gd_scene load_steps=5 format=3 uid="uid://dy7jjtm1xawb5"]
+[gd_scene load_steps=8 format=3 uid="uid://dy7jjtm1xawb5"]
 
 [ext_resource type="PackedScene" uid="uid://4bk5u6xmrq56" path="res://game_objects/ball/ball.tscn" id="1_kkbnu"]
 [ext_resource type="PackedScene" uid="uid://5laki8o71bpl" path="res://game_objects/paddle/paddle.tscn" id="2_tari7"]
 [ext_resource type="Script" path="res://components/PlayerController.cs" id="3_o05sq"]
+[ext_resource type="Script" path="res://components/AIController.cs" id="4_c1ren"]
+[ext_resource type="Script" path="res://components/ScoreLabel.cs" id="5_p5dps"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pbhu7"]
+size = Vector2(27, 627.25)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_olej5"]
 size = Vector2(1176, 41)
 
 [node name="Main" type="Node"]
 
+[node name="KillZone" type="Area2D" parent="."]
+position = Vector2(4, -1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="KillZone"]
+position = Vector2(-34.5, 332.625)
+shape = SubResource("RectangleShape2D_pbhu7")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="KillZone" groups=["goal"]]
+position = Vector2(1182, 331)
+shape = SubResource("RectangleShape2D_pbhu7")
+
 [node name="Walls" type="Area2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls" groups=["wall"]]
 position = Vector2(575, 10)
 shape = SubResource("RectangleShape2D_olej5")
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="Walls"]
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Walls" groups=["wall"]]
 position = Vector2(579, 648)
+scale = Vector2(0.986205, 0.601201)
 shape = SubResource("RectangleShape2D_olej5")
 
 [node name="ColorRect" type="ColorRect" parent="Walls"]
-offset_left = -9.0
-offset_top = 629.0
-offset_right = 1170.0
-offset_bottom = 669.0
+offset_left = -19.0
+offset_top = 630.0
+offset_right = 1160.0
+offset_bottom = 670.0
 
 [node name="ColorRect2" type="ColorRect" parent="Walls"]
 offset_left = -19.0
@@ -31,21 +48,40 @@ offset_top = -9.0
 offset_right = 1160.0
 offset_bottom = 31.0
 
-[node name="Ball" parent="." node_paths=PackedStringArray("PlayerPaddle", "AIPaddle") instance=ExtResource("1_kkbnu")]
-position = Vector2(512, 300)
-speed = 2.0
+[node name="Ball" parent="." node_paths=PackedStringArray("scoreLabel", "PlayerPaddle", "AIPaddle") instance=ExtResource("1_kkbnu")]
+position = Vector2(579, 312)
+speed = 8.0
 x = -1.0
+scoreLabel = NodePath("../ScoreLabel")
 PlayerPaddle = NodePath("../Player Paddle")
 AIPaddle = NodePath("../Enemy Paddle")
 
 [node name="Player Paddle" parent="." instance=ExtResource("2_tari7")]
-position = Vector2(12, 311)
+position = Vector2(-32, 311)
 
 [node name="PlayerController" type="Node" parent="Player Paddle"]
 script = ExtResource("3_o05sq")
-playerSpeed = 5.0
+PlayerSpeed = 8.0
 
 [node name="Enemy Paddle" parent="." instance=ExtResource("2_tari7")]
-position = Vector2(1135, 317)
+position = Vector2(1180, 322)
+rotation = 3.14159
 
+[node name="AIController" type="Node" parent="Enemy Paddle" node_paths=PackedStringArray("trackingEntity")]
+script = ExtResource("4_c1ren")
+AISpeed = 10.0
+trackingEntity = NodePath("../../Ball")
+
+[node name="ScoreLabel" type="Label" parent="."]
+offset_left = 549.0
+offset_top = 49.0
+offset_right = 589.0
+offset_bottom = 72.0
+scale = Vector2(1.8, 1.8)
+text = "0"
+horizontal_alignment = 1
+script = ExtResource("5_p5dps")
+
+[connection signal="area_entered" from="KillZone" to="Ball" method="KillZone"]
+[connection signal="area_entered" from="KillZone" to="ScoreLabel" method="KillZone"]
 [connection signal="area_entered" from="Walls" to="Ball" method="OnCollideWall"]

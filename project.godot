@@ -19,6 +19,11 @@ config/icon="res://icon.svg"
 
 project/assembly_name="First_Project"
 
+[global_group]
+
+ball_group=""
+goal=""
+
 [input]
 
 W={

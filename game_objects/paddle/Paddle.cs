@@ -18,7 +18,8 @@ public partial class Paddle : Node2D
 	
 	public void OnCollidePaddle(Area2D area)
 	{
-		EmitSignal(SignalName.PaddleHit, this);
-		GD.Print("Paddle Collided");
+		if (area.IsInGroup("ball_group")){
+			EmitSignal(SignalName.PaddleHit, this);
+		}
 	}
 }

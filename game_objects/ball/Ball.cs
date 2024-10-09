@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using First_Project;
 
 public partial class Ball : Node2D
 {
@@ -14,6 +15,9 @@ public partial class Ball : Node2D
 	public float y {get; set;} = 0;
 	
 	private Vector2 _direction { get; set; }
+	
+	[Export]
+	public ScoreLabel scoreLabel {get; set;}
 	
 	[ExportGroup("Paddles")]
 	[Export]
@@ -41,12 +45,23 @@ public partial class Ball : Node2D
 
 	public void OnCollideWall(Area2D body)
 	{
-		_direction = new Vector2(_direction.X, _direction.Y * -1);
-		GD.Print(_direction.X, _direction.Y);	
+		if (body.IsInGroup("ball_group")){
+			_direction = new Vector2(_direction.X, _direction.Y * -1);
+		}
 	}
 
 	public void OnCollidePaddle(Paddle paddle){
-		//_direction = _paddle.GlobalPosition.DirectionTo(GlobalPosition);
 		_direction = paddle.GlobalPosition.DirectionTo(this.GlobalPosition);
+	}
+
+	public void KillZone(Area2D area){
+		if (GlobalPosition.X > 600){
+			Color tempColor = Colors.Green;
+			scoreLabel.Modulate = tempColor;
+			scoreLabel.CurrentScore = scoreLabel.CurrentScore + 1; 
+			scoreLabel.Text = scoreLabel.CurrentScore.ToString(); 
+		} 
+		GlobalPosition = new Vector2(520, 312);
+		_direction = new Vector2(x, y);
 	}
 }
